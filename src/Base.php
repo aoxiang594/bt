@@ -69,7 +69,14 @@ class Base
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $output = curl_exec($ch);
         curl_close($ch);
-        return json_decode($output, true);
+        $result =  json_decode($output, true);
+        if(is_array($result))
+        {
+            return $result;
+        }else{
+            // dump($output);
+            throw new \Exception('返回内容解析失败');
+        }
     }
 
     /**
