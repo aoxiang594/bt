@@ -1,0 +1,29 @@
+{
+    "name": "aoxiang/bt",
+    "description": "宝塔面板API",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aoxiang",
+            "email": "mail@aoxiang.me"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "ext-json": "*",
+        "ext-curl": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5.20"
+    },
+    "autoload": {
+        "psr-4": {
+            "Aoxiang\\Bt\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Aoxiang\\Bt\\Tests\\": "tests/"
+        }
+    }
+}
