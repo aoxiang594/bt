@@ -18,24 +18,27 @@ class Base
     public function __construct($panel, $key)
     {
         $this->btPanel = $panel;
-        $this->btKey = $key;
+        $this->btKey   = $key;
     }
 
     public function panel($host)
     {
         $this->btPanel = $host;
+
         return $this;
     }
 
     public function key($key)
     {
         $this->btKey = $key;
+
         return $this;
     }
 
-    protected function error($errorMsg): bool
+    protected function error($errorMsg) : bool
     {
         $this->error = $errorMsg;
+
         return false;
     }
 
@@ -46,12 +49,12 @@ class Base
 
     public function httpPostCookie($url, $data = [], $timeout = 60)
     {
-        if (!$this->btPanel) throw new BtException(101);
-        if (!$this->btKey) throw new BtException(102);
+        if( !$this->btPanel ) throw new BtException(101);
+        if( !$this->btKey ) throw new BtException(102);
 
         //定义cookie保存位置
         $cookieFile = './' . md5($this->btPanel) . '.cookie';
-        if (!file_exists($cookieFile)) {
+        if( !file_exists($cookieFile) ){
             $fp = fopen($cookieFile, 'w+');
             fclose($fp);
         }
@@ -67,28 +70,36 @@ class Base
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        //Proxy
+//        curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_BASIC); //代理认证模式
+//        curl_setopt($ch, CURLOPT_PROXY, "127.0.0.1");        //代理服务器地址
+//        curl_setopt($ch, CURLOPT_PROXYPORT, 8888);           //代理服务器端口
+//        curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP); //使用http代理模式
+
         $output = curl_exec($ch);
+//        dump($output);
         curl_close($ch);
-        $result =  json_decode($output, true);
-        if(is_array($result))
-        {
+        $result = json_decode($output, true);
+
+        if( is_array($result) ){
             return $result;
-        }else{
-            // dump($output);
+        } else {
             throw new \Exception('返回内容解析失败');
         }
     }
 
     /**
      * @param $data
+     *
      * @return array
      */
     private function getData($data)
     {
         $time = time();
+
         return array_merge($data, [
             'request_token' => md5($time . '' . md5($this->btKey)),
-            'request_time' => $time
+            'request_time'  => $time,
         ]);
     }
 

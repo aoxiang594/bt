@@ -46,22 +46,23 @@ class Site extends Base
         'DelDirBinding' => '/site?action=DelDirBinding',         //删除网站绑定子目录
         'GetDirRewrite' => '/site?action=GetDirRewrite',         //获取网站子目录伪静态规则
 
-        'GetSiteLogs'   => '/site?action=GetSiteLogs',                  //获取网站日志
-        'GetSecurity'   => '/site?action=GetSecurity',                  //获取网站盗链状态及规则信息
-        'SetSecurity'   => '/site?action=SetSecurity',                  //设置网站盗链状态及规则信息
-        'GetSSL'        => '/site?action=GetSSL',                       //获取SSL状态及证书详情
-        'HttpToHttps'   => '/site?action=HttpToHttps',                  //强制HTTPS
-        'CloseToHttps'  => '/site?action=CloseToHttps',                 //关闭强制HTTPS
-        'SetSSL'        => '/site?action=SetSSL',                       //设置SSL证书
-        'RenewCert'     => '/acme?action=renew_cert',                    //续签SSL证书
-        'CloseSSLConf'  => '/site?action=CloseSSLConf',                 //关闭SSL
-        'WebGetIndex'   => '/site?action=GetIndex',                     //获取网站默认文件
-        'WebSetIndex'   => '/site?action=SetIndex',                     //设置网站默认文件
-        'GetLimitNet'   => '/site?action=GetLimitNet',                  //获取网站流量限制信息
-        'SetLimitNet'   => '/site?action=SetLimitNet',                  //设置网站流量限制信息
-        'CloseLimitNet' => '/site?action=CloseLimitNet',                //关闭网站流量限制
-        'Get301Status'  => '/site?action=Get301Status',                 //获取网站301重定向信息
-        'Set301Status'  => '/site?action=Set301Status',                 //设置网站301重定向信息
+        'GetSiteLogs'   => '/site?action=GetSiteLogs',                    //获取网站日志
+        'GetSecurity'   => '/site?action=GetSecurity',                    //获取网站盗链状态及规则信息
+        'SetSecurity'   => '/site?action=SetSecurity',                    //设置网站盗链状态及规则信息
+        'GetSSL'        => '/site?action=GetSSL',                         //获取SSL状态及证书详情
+        'HttpToHttps'   => '/site?action=HttpToHttps',                    //强制HTTPS
+        'CloseToHttps'  => '/site?action=CloseToHttps',                   //关闭强制HTTPS
+        'SetSSL'        => '/site?action=SetSSL',                         //设置SSL证书
+        'RenewCert'     => '/acme?action=renew_cert',                     //续签SSL证书
+        'ApplyCertApi'  => '/acme?action=apply_cert_api',                 //设置 Let's Encrypt 证书
+        'CloseSSLConf'  => '/site?action=CloseSSLConf',                   //关闭SSL
+        'WebGetIndex'   => '/site?action=GetIndex',                       //获取网站默认文件
+        'WebSetIndex'   => '/site?action=SetIndex',                       //设置网站默认文件
+        'GetLimitNet'   => '/site?action=GetLimitNet',                    //获取网站流量限制信息
+        'SetLimitNet'   => '/site?action=SetLimitNet',                    //设置网站流量限制信息
+        'CloseLimitNet' => '/site?action=CloseLimitNet',                  //关闭网站流量限制
+        'Get301Status'  => '/site?action=Get301Status',                   //获取网站301重定向信息
+        'Set301Status'  => '/site?action=Set301Status',                   //设置网站301重定向信息
 
         'GetProxyList' => '/site?action=GetProxyList',            //获取网站反代信息及状态
         'CreateProxy'  => '/site?action=CreateProxy',             //添加网站反代信息
@@ -184,7 +185,7 @@ class Site extends Base
         $path,
         $ps = '',
         $version = '',
-        $sql = false,
+        $sql = 'MySQL',
         $coding = 'utf8',
         $dataUser = '',
         $dataPassword = '',
@@ -195,7 +196,11 @@ class Site extends Base
         $port = '80'
     ) {
         $data = [
-            'webname'      => $webName,
+            'webname'      => json_encode([
+                'domain'     => $webName,
+                'domainlist' => [],
+                'count'      => 0,
+            ]),
             'path'         => $path,
             'type_id'      => $type_id,
             'type'         => "PHP",
@@ -732,7 +737,7 @@ class Site extends Base
     public function renewCert($index)
     {
         $data = [
-            'index' => $index
+            'index' => $index,
         ];
 
         try {
@@ -741,6 +746,31 @@ class Site extends Base
             return $this->error($e->getMessage());
         }
     }
+
+    /**
+     * @param $id
+     * @param $authTo
+     * @param $domain
+     *
+     * @return array|bool|mixed
+     */
+//    public function applyCertApi($id, $authTo, $domain)
+//    {
+//        $data = [
+//            "domains"       => [$domain],
+//            "auth_type"     => "http",
+//            "auth_to"       => $authTo,
+//            "auto_wildcard" => 0,
+//            "id"            => $id,
+//        ];
+////        dump($data);
+//        try {
+////            dump($this->getUrl('ApplyCertApi'));
+//            return $this->httpPostCookie($this->getUrl('ApplyCertApi'), $data);
+//        } catch (Exception $e) {
+//            return $this->error($e->getMessage());
+//        }
+//    }
 
     /**
      * 关闭SSL
