@@ -9,19 +9,20 @@ use Exception;
 class Plugin extends Base
 {
     protected $config = [
-        'Deployment' => '/deployment?action=GetList',                            //宝塔一键部署列表
+        'Deployment'   => '/deployment?action=GetList',                            //宝塔一键部署列表
         'SetupPackage' => '/plugin?action=a&name=deployment&s=SetupPackage',       //部署任务
-        'GetSpeed' => '/deployment?action=GetSpeed'
+        'GetSpeed'     => '/deployment?action=GetSpeed',
     ];
 
     /**
      * 获取一键部署列表
+     *
      * @return bool|mixed
      */
     public function deployment()
     {
         $data = [
-            'type' => 1
+            'type' => 1,
         ];
 
         try {
@@ -33,16 +34,18 @@ class Plugin extends Base
 
     /**
      * 一键部署执行
-     * @param string $sourceName
-     * @param string $siteName
-     * @param string $phpVersion
+     *
+     * @param  string  $sourceName
+     * @param  string  $siteName
+     * @param  string  $phpVersion
+     *
      * @return bool|mixed
      */
     public function setupPackage($sourceName, $siteName, $phpVersion)
     {
         $data = [
-            'dname' => $sourceName,
-            'site_name' => $siteName,
+            'dname'       => $sourceName,
+            'site_name'   => $siteName,
             'php_version' => $phpVersion,
         ];
 
@@ -55,6 +58,7 @@ class Plugin extends Base
 
     /**
      * 获取部署进度
+     *
      * @return bool|mixed
      */
     public function getSpeed()

@@ -71,10 +71,10 @@ class Base
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         //Proxy
-//        curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_BASIC); //代理认证模式
-//        curl_setopt($ch, CURLOPT_PROXY, "127.0.0.1");        //代理服务器地址
-//        curl_setopt($ch, CURLOPT_PROXYPORT, 8888);           //代理服务器端口
-//        curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP); //使用http代理模式
+        // curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_BASIC); //代理认证模式
+        // curl_setopt($ch, CURLOPT_PROXY, "127.0.0.1");        //代理服务器地址
+        // curl_setopt($ch, CURLOPT_PROXYPORT, 8888);           //代理服务器端口
+        // curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP); //使用http代理模式
 
         $output = curl_exec($ch);
 //        dump($output);
